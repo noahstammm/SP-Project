@@ -1,0 +1,23 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+    <div class="container">
+        <h1>Football win probability</h1>
+        <p>
+            See how high are the chance for a football team to win the next game.
+        </p>
+
+        <form action="{{ url_for("calculate_football") }}" method="post">
+            <div class="form-group">
+                <label for="teams_select">Teams:</label>
+                <select class="form-control" id="teams_select" name="teams_select">
+                    {% for team in teams %}
+                        <option value="{{ team }}">{{ team }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <input type="submit" value="Submit">
+        </form>
+
+    </div>
+{% endblock %}

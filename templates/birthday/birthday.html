@@ -1,0 +1,16 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+    <div class="container">
+        <h1>Birthday Paradox</h1>
+        <p>
+            In probability theory, the birthday problem asks for the probability that, in a set of n randomly chosen people, at least two will share a birthday. <br/>
+            Enter the amount of people
+        </p>
+        <form action="{{ url_for("calculate_birthday") }}" method="post">
+            <label for="amount_people">Amount people:</label><br>
+            <input type="number" id="amount_people" name="amount_people" value="amount_people"><br>
+            <input type="submit" value="Submit">
+        </form>
+    </div>
+{% endblock %}

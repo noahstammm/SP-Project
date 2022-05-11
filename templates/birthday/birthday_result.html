@@ -1,0 +1,9 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+    <div class="container">
+        <h1>Birthdayparadox Result</h1>
+        <p>Amount people: {{ dto.amount_people }}</p>
+        <p>The probability that two people share the same birthday is {{ dto.probability }}%.</p>
+    </div>
+{% endblock %}

@@ -1,0 +1,10 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+    <div class="container">
+        <h1>Roulette Result</h1>
+        <p>Budget: {{ dto.budget }}</p>
+        <p>Bet: {{ dto.bet }}</p>
+        <p>You were able to play {{ dto.amount_rounds }} rounds</p>
+    </div>
+{% endblock %}
