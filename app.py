@@ -7,6 +7,8 @@ from dto.football.football_dto import FootballDto
 from service.birthday.birthday_service import calculate_probability
 from service.roulette.roulette_service import RouletteService
 from service.football.football_service import footballService, get_teams
+from service.football.football_service import footballService, get_team_statistics
+from service.football.football_service import footballService, probability_to_win
 
 app = Flask(__name__)
 # Load Configurations
@@ -54,9 +56,15 @@ def football() -> str:
 
 
 @app.route('/football/result', methods=['POST'])
-def calculate_football() -> str:
+def calculate_football():
+    print("------------  results are calculated -----------------")
     team = request.form.get('teams_select')
-    football_dto = FootballDto(team=team)
+    team_stat = get_team_statistics(team)
+    wins = team_stat[2]
+    lost = team_stat[3]
+    prob = probability_to_win(wins, lost)
+    football_dto = FootballDto(team=team, wins=wins, lost=lost, probability=prob)
+
     return render_template(template_name_or_list='football/football_result.html', dto=football_dto)
 
 
