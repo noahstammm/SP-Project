@@ -112,6 +112,9 @@ def main() -> None:
 
         return current_odds_name, current_odds_probability
 
+
+
+
     name = "Horsens"
     get_team_statistics(name)
 

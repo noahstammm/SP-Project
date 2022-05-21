@@ -9,6 +9,7 @@ from service.roulette.roulette_service import RouletteService
 from service.football.football_service import footballService, get_teams
 from service.football.football_service import footballService, get_team_statistics
 from service.football.football_service import footballService, probability_to_win
+from service.football.football_service import footballService, get_standings
 
 app = Flask(__name__)
 # Load Configurations
@@ -66,6 +67,11 @@ def calculate_football():
     football_dto = FootballDto(team=team, wins=wins, lost=lost, probability=prob)
 
     return render_template(template_name_or_list='football/football_result.html', dto=football_dto)
+
+
+@app.route('/football/standings')
+def standings_football():
+    return render_template(template_name_or_list='football/football_standings.html')
 
 
 if __name__ == '__main__':

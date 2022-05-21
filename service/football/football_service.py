@@ -133,6 +133,9 @@ def probability_to_win(wins, lost) -> float:
 
     return win_probability
 
+def get_standings()-> str:
+    return print("this is a test")
+
 
 
 
