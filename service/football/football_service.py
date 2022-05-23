@@ -3,6 +3,7 @@ import json
 import requests
 from dto.football.football_dto import FootballDto
 
+
 teams_wins = int
 teams_lost = int
 
@@ -133,12 +134,12 @@ def probability_to_win(wins, lost) -> float:
 
     return win_probability
 
-def get_standings()-> str:
-    return print("this is a test")
+    #for x in teams_id_list:
 
 
 
 
+#def get_standings(wins, lost, draws, points, teamname)-> float:
 
 
 
