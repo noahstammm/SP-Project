@@ -28,4 +28,5 @@ headers = {}
 
 response_standings = requests.request("GET", url_standings, headers=headers, data=payload)
 content_standings = json.loads(response_standings.text)
+
 print(content_standings)
