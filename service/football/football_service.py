@@ -3,9 +3,11 @@ import json
 import requests
 from dto.football.football_dto import FootballDto
 
-
 teams_wins = int
 teams_lost = int
+
+api_token = "?api_token=sahmC5rxgV1pUEJyQ98314ySQtZ19MyyXhUsTxXOpJsgmoTe0cgWWNKr7H99"
+
 
 def footballService(team: str) -> Decimal:
     # Formel von Laplace
@@ -25,9 +27,8 @@ def get_teams() -> [str]:
 
     teams = list(map(lambda team: team.get('name'), content.get('data')))
 
-
-
     return teams
+
 
 def get_team_statistics(teams_name) -> [str]:
     # Request team
@@ -127,19 +128,28 @@ def get_team_statistics(teams_name) -> [str]:
 
     return current_odds_name, current_odds_probability, team_wins, team_lost
 
+
 def probability_to_win(wins, lost) -> float:
     total_games = wins + lost
-    win_probability = 100/total_games*wins
+    win_probability = 100 / total_games * wins
     print("Total games played: ", total_games)
 
     return win_probability
 
-    #for x in teams_id_list:
+    # for x in teams_id_list:
 
 
+# Get standings
 
 
-#def get_standings(wins, lost, draws, points, teamname)-> float:
+def get_standings():
+    url_stands = f"https://soccer.sportmonks.com/api/v2.0/standings/season/18334/{api_token}"
 
+    payload = {}
+    headers = {}
 
-
+    response_stands = requests.request("GET", url_stands, headers=headers, data=payload)
+    content_stands = json.loads(response_stands.text)
+    position = content_stands['data']['standings']['data'][0]['position']['team_name']
+    #print(content_stands)
+    print(position)

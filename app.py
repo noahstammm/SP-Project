@@ -71,6 +71,7 @@ def calculate_football():
 
 @app.route('/football/standings')
 def standings_football():
+
     return render_template(template_name_or_list='football/football_standings.html')
 
 
