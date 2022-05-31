@@ -72,6 +72,10 @@ def calculate_football():
 @app.route('/football/standings')
 def standings_football():
 
+    standings1 = get_standings()
+    print(standings1)
+
+    football_dto=StandingsDto(pos=pos, name=name, playedgames=playedgames, wins=wins, lost=lost, draw=draw, plus_minus=plusminus, points=points)
     return render_template(template_name_or_list='football/football_standings.html')
 
 

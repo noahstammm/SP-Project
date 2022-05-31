@@ -148,8 +148,31 @@ def get_standings():
     payload = {}
     headers = {}
 
+    # position = str
     response_stands = requests.request("GET", url_stands, headers=headers, data=payload)
     content_stands = json.loads(response_stands.text)
-    position = content_stands['data']['standings']['data'][0]['position']['team_name']
-    #print(content_stands)
-    print(position)
+
+    print("-------------Regular Season-------------------")
+    length_r = 12
+    # length_champ = 6
+    # length_relegation = 6
+
+    i = 0
+    while i < length_r:
+        rs_pos = content_stands['data'][0]['standings']['data'][i]['position']
+        rs_name = content_stands['data'][0]['standings']['data'][i]['team_name']
+        rs_playedgames = content_stands['data'][0]['standings']['data'][i]['overall']['games_played']
+        rs_won = content_stands['data'][0]['standings']['data'][i]['overall']['won']
+        rs_lost = content_stands['data'][0]['standings']['data'][i]['overall']['lost']
+        rs_draw = content_stands['data'][0]['standings']['data'][i]['overall']['draw']
+        rs_plusminus = ((content_stands['data'][0]['standings']['data'][i]['overall']['goals_scored']) - (
+            content_stands['data'][0]['standings']['data'][i]['overall']['goals_against']))
+        rs_points = content_stands['data'][0]['standings']['data'][i]['overall']['points']
+
+        print(
+            "Pos: " + str(rs_pos) + " Club: " + rs_name + " Games Played: " + str(rs_playedgames) + " Won: " + str(
+                rs_won) + " Lost: " + str(rs_lost) + " Draw: " + str(rs_draw) + " +/-: " + str(
+                rs_plusminus) + " Points: " + str(rs_points))
+
+        return rs_pos, rs_name, rs_playedgames, rs_won, rs_lost, rs_draw, rs_plusminus, rs_points
+        i += 1
