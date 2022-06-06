@@ -9,13 +9,3 @@ class FootballDto:
     probability: float
 
 
-@dataclass
-class StandingsDto:
-    pos: int
-    name: str
-    playedgames: int
-    won: int
-    lost: int
-    draw: int
-    plus_minus: int
-    points: int

@@ -1,5 +1,9 @@
 from decimal import Decimal
 import json
+from typing import List, Any
+
+import pandas as pd
+
 import requests
 from dto.football.football_dto import FootballDto
 
@@ -136,13 +140,8 @@ def probability_to_win(wins, lost) -> float:
 
     return win_probability
 
-    # for x in teams_id_list:
 
-
-# Get standings
-
-
-def get_standings():
+def get_standingsregular():
     url_stands = f"https://soccer.sportmonks.com/api/v2.0/standings/season/18334/{api_token}"
 
     payload = {}
@@ -151,28 +150,117 @@ def get_standings():
     # position = str
     response_stands = requests.request("GET", url_stands, headers=headers, data=payload)
     content_stands = json.loads(response_stands.text)
-
-    print("-------------Regular Season-------------------")
     length_r = 12
     # length_champ = 6
     # length_relegation = 6
+    data = {
+        "Position": [],
+        "Name": [],
+        "Played Games": [],
+        "Won": [],
+        "Lost": [],
+        "Draws": [],
+        "+/-": [],
+        "Points": []
+
+    }
 
     i = 0
     while i < length_r:
-        rs_pos = content_stands['data'][0]['standings']['data'][i]['position']
-        rs_name = content_stands['data'][0]['standings']['data'][i]['team_name']
-        rs_playedgames = content_stands['data'][0]['standings']['data'][i]['overall']['games_played']
-        rs_won = content_stands['data'][0]['standings']['data'][i]['overall']['won']
-        rs_lost = content_stands['data'][0]['standings']['data'][i]['overall']['lost']
-        rs_draw = content_stands['data'][0]['standings']['data'][i]['overall']['draw']
-        rs_plusminus = ((content_stands['data'][0]['standings']['data'][i]['overall']['goals_scored']) - (
-            content_stands['data'][0]['standings']['data'][i]['overall']['goals_against']))
-        rs_points = content_stands['data'][0]['standings']['data'][i]['overall']['points']
+        data.get("Position").append(content_stands['data'][0]['standings']['data'][i]['position'])
+        data.get("Name").append(content_stands['data'][0]['standings']['data'][i]['team_name'])
+        data.get("Played Games").append(content_stands['data'][0]['standings']['data'][i]['overall']['games_played'])
+        data.get("Won").append(content_stands['data'][0]['standings']['data'][i]['overall']['won'])
+        data.get("Lost").append(content_stands['data'][0]['standings']['data'][i]['overall']['lost'])
+        data.get("Draws").append(content_stands['data'][0]['standings']['data'][i]['overall']['draw'])
+        data.get("+/-").append(((content_stands['data'][0]['standings']['data'][i]['overall']['goals_scored'])
+                                - (content_stands['data'][0]['standings']['data'][i]['overall']['goals_against'])))
+        data.get("Points").append(content_stands['data'][0]['standings']['data'][i]['overall']['points'])
 
-        print(
-            "Pos: " + str(rs_pos) + " Club: " + rs_name + " Games Played: " + str(rs_playedgames) + " Won: " + str(
-                rs_won) + " Lost: " + str(rs_lost) + " Draw: " + str(rs_draw) + " +/-: " + str(
-                rs_plusminus) + " Points: " + str(rs_points))
-
-        return rs_pos, rs_name, rs_playedgames, rs_won, rs_lost, rs_draw, rs_plusminus, rs_points
         i += 1
+
+    df = pd.DataFrame(data)
+    return df
+
+
+def get_standingsch():
+    url_stands = f"https://soccer.sportmonks.com/api/v2.0/standings/season/18334/{api_token}"
+
+    payload = {}
+    headers = {}
+
+    # position = str
+    response_stands = requests.request("GET", url_stands, headers=headers, data=payload)
+    content_stands = json.loads(response_stands.text)
+    length_r = 6
+
+    datach = {
+        "Position": [],
+        "Name": [],
+        "Played Games": [],
+        "Won": [],
+        "Lost": [],
+        "Draws": [],
+        "+/-": [],
+        "Points": []
+
+    }
+
+    i = 0
+    while i < length_r:
+        datach.get("Position").append(content_stands['data'][1]['standings']['data'][i]['position'])
+        datach.get("Name").append(content_stands['data'][1]['standings']['data'][i]['team_name'])
+        datach.get("Played Games").append(content_stands['data'][1]['standings']['data'][i]['overall']['games_played'])
+        datach.get("Won").append(content_stands['data'][1]['standings']['data'][i]['overall']['won'])
+        datach.get("Lost").append(content_stands['data'][1]['standings']['data'][i]['overall']['lost'])
+        datach.get("Draws").append(content_stands['data'][1]['standings']['data'][i]['overall']['draw'])
+        datach.get("+/-").append(((content_stands['data'][1]['standings']['data'][i]['overall']['goals_scored'])
+                                  - (content_stands['data'][1]['standings']['data'][i]['overall']['goals_against'])))
+        datach.get("Points").append(content_stands['data'][1]['standings']['data'][i]['overall']['points'])
+
+        i += 1
+
+    df = pd.DataFrame(datach)
+
+    return df
+
+
+def get_standingsrel():
+    url_stands = f"https://soccer.sportmonks.com/api/v2.0/standings/season/18334/{api_token}"
+
+    payload = {}
+    headers = {}
+
+    response_stands = requests.request("GET", url_stands, headers=headers, data=payload)
+    content_stands = json.loads(response_stands.text)
+    length_r = 6
+
+    datarel = {
+        "Position": [],
+        "Name": [],
+        "Played Games": [],
+        "Won": [],
+        "Lost": [],
+        "Draws": [],
+        "+/-": [],
+        "Points": []
+
+    }
+
+    i = 0
+    while i < length_r:
+        datarel.get("Position").append(content_stands['data'][2]['standings']['data'][i]['position'])
+        datarel.get("Name").append(content_stands['data'][2]['standings']['data'][i]['team_name'])
+        datarel.get("Played Games").append(content_stands['data'][2]['standings']['data'][i]['overall']['games_played'])
+        datarel.get("Won").append(content_stands['data'][2]['standings']['data'][i]['overall']['won'])
+        datarel.get("Lost").append(content_stands['data'][2]['standings']['data'][i]['overall']['lost'])
+        datarel.get("Draws").append(content_stands['data'][2]['standings']['data'][i]['overall']['draw'])
+        datarel.get("+/-").append(((content_stands['data'][2]['standings']['data'][i]['overall']['goals_scored'])
+                                   - (content_stands['data'][2]['standings']['data'][i]['overall']['goals_against'])))
+        datarel.get("Points").append(content_stands['data'][2]['standings']['data'][i]['overall']['points'])
+
+        i += 1
+
+    df = pd.DataFrame(datarel)
+
+    return df

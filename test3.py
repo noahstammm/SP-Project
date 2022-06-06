@@ -1,13 +1,10 @@
-
 import json
-
 
 import pandas as pd
 
 import requests
 
-
-api_token = '?api_token=sahmC5rxgV1pUEJyQ98314ySQtZ19MyyXhUsTxXOpJsgmoTe0cgWWNKr7H99'
+api_token = "?api_token=sahmC5rxgV1pUEJyQ98314ySQtZ19MyyXhUsTxXOpJsgmoTe0cgWWNKr7H99"
 
 
 def get_standings():
@@ -49,5 +46,4 @@ def get_standings():
     i += 1
 
     df = pd.DataFrame(data)
-
     print(df)

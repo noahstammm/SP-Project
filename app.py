@@ -1,3 +1,4 @@
+import pandas as pd
 from flask import Flask, render_template, request
 
 from dto.birthday.birthday_dto import BirthdayDto
@@ -6,10 +7,10 @@ from dto.football.football_dto import FootballDto
 
 from service.birthday.birthday_service import calculate_probability
 from service.roulette.roulette_service import RouletteService
-from service.football.football_service import footballService, get_teams
+from service.football.football_service import footballService, get_teams, get_standingsch, get_standingsrel
 from service.football.football_service import footballService, get_team_statistics
 from service.football.football_service import footballService, probability_to_win
-from service.football.football_service import footballService, get_standings
+from service.football.football_service import footballService, get_standingsregular
 
 app = Flask(__name__)
 # Load Configurations
@@ -71,12 +72,33 @@ def calculate_football():
 
 @app.route('/football/standings')
 def standings_football():
+    df_regular = get_standingsregular()
+    df_champ = get_standingsch()
+    df_releg = get_standingsrel()
 
-    standings1 = get_standings()
-    print(standings1)
+    return render_template(template_name_or_list='football/football_standings.html',
+                           tables_regular=[df_regular.to_html(classes='data')],
+                           titles_regular=df_regular.columns.values,
+                           tables_champ=[df_champ.to_html(classes="data")], titles_champ=df_champ.columns.values,
+                           tables_releg=[df_releg.to_html(classes='data')], titles_releg=df_releg.columns.values)
 
-    football_dto=StandingsDto(pos=pos, name=name, playedgames=playedgames, wins=wins, lost=lost, draw=draw, plus_minus=plusminus, points=points)
-    return render_template(template_name_or_list='football/football_standings.html')
+
+@app.route('/football/standings/result', methods=['GET'])
+def standings_football_result():
+    selected = request.args.get('season_phase')
+    df
+    if selected == 'tables_regular':
+        df = get_standingsregular()
+
+    elif selected == 'tables_champ':
+        df = get_standingsch()
+
+    elif selected == 'tables_releg':
+        df = get_standingsrel()
+
+    return render_template(template_name_or_list='football/football_standings.html',
+                           tables=[df.to_html(classes='data')],
+                           titles=df.columns.values)
 
 
 if __name__ == '__main__':
