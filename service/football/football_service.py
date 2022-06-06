@@ -264,3 +264,38 @@ def get_standingsrel():
     df = pd.DataFrame(datarel)
 
     return df
+
+
+def get_season_ids():
+    url_seasonall = f"https://soccer.sportmonks.com/api/v2.0/seasons{api_token}"
+
+    payload = {}
+    headers = {}
+
+    response = requests.request("GET", url_seasonall, headers=headers, data=payload)
+    all_seasons = json.loads(response.text)
+    length_r = 25
+
+    data = {
+        "Season ID": [],
+        "Season": [],
+        "League ID": [],
+        "Current Season": [],
+        "Current Round ID": [],
+        "Current Stage ID": []
+    }
+
+    i = 0
+    while i < length_r:
+        data.get("Season ID").append(all_seasons['data'][i]['id'])
+        data.get("Season").append(all_seasons['data'][i]['name'])
+        data.get("League ID").append(all_seasons['data'][i]['league_id'])
+        data.get("Current Season").append(all_seasons['data'][i]['is_current_season'])
+        data.get("Current Round ID").append(all_seasons['data'][i]['current_round_id'])
+        data.get("Current Stage ID").append(all_seasons['data'][i]['current_stage_id'])
+
+        i += 1
+
+    df = pd.DataFrame(data)
+    df = df.loc[df['League ID'] == 271]
+    return df

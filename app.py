@@ -8,7 +8,8 @@ from dto.football.football_dto import FootballDto
 
 from service.birthday.birthday_service import calculate_probability
 from service.roulette.roulette_service import RouletteService
-from service.football.football_service import footballService, get_teams, get_standingsch, get_standingsrel
+from service.football.football_service import footballService, get_teams, get_standingsch, get_standingsrel, \
+    get_season_ids
 from service.football.football_service import footballService, get_team_statistics
 from service.football.football_service import footballService, probability_to_win
 from service.football.football_service import footballService, get_standingsregular
@@ -73,15 +74,11 @@ def calculate_football():
 
 @app.route('/football/standings')
 def standings_football():
-    df_regular = get_standingsregular()
-    df_champ = get_standingsch()
-    df_releg = get_standingsrel()
+    season_all = get_season_ids()
 
     return render_template(template_name_or_list='football/football_standings.html',
-                           tables_regular=[df_regular.to_html(classes='data')],
-                           titles_regular=df_regular.columns.values,
-                           tables_champ=[df_champ.to_html(classes="data")], titles_champ=df_champ.columns.values,
-                           tables_releg=[df_releg.to_html(classes='data')], titles_releg=df_releg.columns.values)
+                           tables=[season_all.to_html(classes='data')],
+                           titles=season_all.columns.values)
 
 
 @app.route('/football/standings/result', methods=['POST'])
