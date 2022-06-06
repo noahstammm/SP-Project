@@ -1,5 +1,6 @@
 import pandas as pd
 from flask import Flask, render_template, request
+from pandas import DataFrame
 
 from dto.birthday.birthday_dto import BirthdayDto
 from dto.roulette.roulette_dto import RouletteDto
@@ -83,22 +84,24 @@ def standings_football():
                            tables_releg=[df_releg.to_html(classes='data')], titles_releg=df_releg.columns.values)
 
 
-@app.route('/football/standings/result', methods=['GET'])
+@app.route('/football/standings/result', methods=['POST'])
 def standings_football_result():
-    selected = request.args.get('season_phase')
-    df
+    selected = request.form.get('season_phase')
+    df1 = get_standingsregular()
+    print(selected)
+
     if selected == 'tables_regular':
-        df = get_standingsregular()
+        df1 = get_standingsregular()
 
     elif selected == 'tables_champ':
-        df = get_standingsch()
+        df1 = get_standingsch()
 
     elif selected == 'tables_releg':
-        df = get_standingsrel()
+        df1 = get_standingsrel()
 
-    return render_template(template_name_or_list='football/football_standings.html',
-                           tables=[df.to_html(classes='data')],
-                           titles=df.columns.values)
+    return render_template(template_name_or_list='football/football_standings_result.html',
+                           tables=[df1.to_html(classes='data')],
+                           titles=df1.columns.values)
 
 
 if __name__ == '__main__':

@@ -4,6 +4,8 @@ import pandas as pd
 
 import requests
 
+from app import standings_football_result
+
 api_token = "?api_token=sahmC5rxgV1pUEJyQ98314ySQtZ19MyyXhUsTxXOpJsgmoTe0cgWWNKr7H99"
 
 
@@ -47,3 +49,5 @@ def get_standings():
 
     df = pd.DataFrame(data)
     print(df)
+
+

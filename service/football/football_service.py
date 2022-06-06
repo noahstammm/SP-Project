@@ -208,15 +208,15 @@ def get_standingsch():
 
     i = 0
     while i < length_r:
-        datach.get("Position").append(content_stands['data'][1]['standings']['data'][i]['position'])
-        datach.get("Name").append(content_stands['data'][1]['standings']['data'][i]['team_name'])
-        datach.get("Played Games").append(content_stands['data'][1]['standings']['data'][i]['overall']['games_played'])
-        datach.get("Won").append(content_stands['data'][1]['standings']['data'][i]['overall']['won'])
-        datach.get("Lost").append(content_stands['data'][1]['standings']['data'][i]['overall']['lost'])
-        datach.get("Draws").append(content_stands['data'][1]['standings']['data'][i]['overall']['draw'])
-        datach.get("+/-").append(((content_stands['data'][1]['standings']['data'][i]['overall']['goals_scored'])
-                                  - (content_stands['data'][1]['standings']['data'][i]['overall']['goals_against'])))
-        datach.get("Points").append(content_stands['data'][1]['standings']['data'][i]['overall']['points'])
+        datach.get("Position").append(content_stands['data'][2]['standings']['data'][i]['position'])
+        datach.get("Name").append(content_stands['data'][2]['standings']['data'][i]['team_name'])
+        datach.get("Played Games").append(content_stands['data'][2]['standings']['data'][i]['overall']['games_played'])
+        datach.get("Won").append(content_stands['data'][2]['standings']['data'][i]['overall']['won'])
+        datach.get("Lost").append(content_stands['data'][2]['standings']['data'][i]['overall']['lost'])
+        datach.get("Draws").append(content_stands['data'][2]['standings']['data'][i]['overall']['draw'])
+        datach.get("+/-").append(((content_stands['data'][2]['standings']['data'][i]['overall']['goals_scored'])
+                                  - (content_stands['data'][2]['standings']['data'][i]['overall']['goals_against'])))
+        datach.get("Points").append(content_stands['data'][2]['standings']['data'][i]['overall']['points'])
 
         i += 1
 
@@ -249,15 +249,15 @@ def get_standingsrel():
 
     i = 0
     while i < length_r:
-        datarel.get("Position").append(content_stands['data'][2]['standings']['data'][i]['position'])
-        datarel.get("Name").append(content_stands['data'][2]['standings']['data'][i]['team_name'])
-        datarel.get("Played Games").append(content_stands['data'][2]['standings']['data'][i]['overall']['games_played'])
-        datarel.get("Won").append(content_stands['data'][2]['standings']['data'][i]['overall']['won'])
-        datarel.get("Lost").append(content_stands['data'][2]['standings']['data'][i]['overall']['lost'])
-        datarel.get("Draws").append(content_stands['data'][2]['standings']['data'][i]['overall']['draw'])
-        datarel.get("+/-").append(((content_stands['data'][2]['standings']['data'][i]['overall']['goals_scored'])
-                                   - (content_stands['data'][2]['standings']['data'][i]['overall']['goals_against'])))
-        datarel.get("Points").append(content_stands['data'][2]['standings']['data'][i]['overall']['points'])
+        datarel.get("Position").append(content_stands['data'][1]['standings']['data'][i]['position'])
+        datarel.get("Name").append(content_stands['data'][1]['standings']['data'][i]['team_name'])
+        datarel.get("Played Games").append(content_stands['data'][1]['standings']['data'][i]['overall']['games_played'])
+        datarel.get("Won").append(content_stands['data'][1]['standings']['data'][i]['overall']['won'])
+        datarel.get("Lost").append(content_stands['data'][1]['standings']['data'][i]['overall']['lost'])
+        datarel.get("Draws").append(content_stands['data'][1]['standings']['data'][i]['overall']['draw'])
+        datarel.get("+/-").append(((content_stands['data'][1]['standings']['data'][i]['overall']['goals_scored'])
+                                   - (content_stands['data'][1]['standings']['data'][i]['overall']['goals_against'])))
+        datarel.get("Points").append(content_stands['data'][1]['standings']['data'][i]['overall']['points'])
 
         i += 1
 
