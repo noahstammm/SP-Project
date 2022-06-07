@@ -7,5 +7,6 @@ class FootballDto:
     wins: int
     lost: int
     probability: float
+    hint: str
 
 
