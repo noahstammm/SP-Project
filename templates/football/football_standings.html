@@ -2,21 +2,24 @@
 {% extends 'layout.html' %}
 
 {% block content %}
-<h1>Standings of Superliga Overview</h1>
-    <form action="{{ url_for("standings_football_result") }}" method="post" >
-        <div class="form-group">
-            <label for="season_phase">Season Phase:</label>
-            <select class="form-control" id="season_phase" name="season_phase">
-                <option value="tables_regular">Regular Season</option>
-                <option value="tables_champ">Championship Round</option>
-                <option value="tables_releg">Relegation Round</option>
-            </select>
-        </div>
-        <input type="submit" value="Submit">
-    </form>
+     <div class="container">
+    <h1>Standings of Superliga Overview</h1>
+        <form action="{{ url_for("standings_football_result") }}" method="post" >
+            <div class="form-group">
+             <label for="season_phase">Season Phase:</label>
+                <select class="form-control" id="season_phase" name="season_phase">
+                    <option value="tables_regular">Regular Season</option>
+                    <option value="tables_champ">Championship Round</option>
+                    <option value="tables_releg">Relegation Round</option>
+                </select>
+            </div>
+            <input type="submit" value="Submit">
+        </form>
 
-    {% for table in tables %}
-        {{ titles[loop.index] }}
-        {{ table|safe }}
-     {% endfor %}
+
+        {% for table in tables %}
+            {{ titles[loop.index] }}
+            {{ table|safe }}
+        {% endfor %}
+    </div>
 {% endblock %}

@@ -54,10 +54,11 @@
 
 {% include 'navigation.html' %}
 {% block content %}
-
+<div class="container">
     {% for table in tables %}
         {{ titles[loop.index] }}
         {{ table|safe }}
 
     {% endfor %}
+</div>
 {% endblock %}
