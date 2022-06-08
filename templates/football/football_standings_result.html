@@ -24,9 +24,7 @@
 
         }
 
-        body{
-            color: white;
-        }
+
         tr:hover {
             background-color: #ddd;
         }
@@ -38,6 +36,11 @@
             background-color: #04AA6D;
             color: white;
         }
+
+        h1 {
+            color: white;
+        }
+
         td {
             color: black
         }
@@ -54,11 +57,13 @@
 
 {% include 'navigation.html' %}
 {% block content %}
-<div class="container">
-    {% for table in tables %}
-        {{ titles[loop.index] }}
-        {{ table|safe }}
 
-    {% endfor %}
-</div>
+    <div class="container">
+
+        {% for table in tables %}
+            {{ titles[loop.index] }}
+            {{ table|safe }}
+
+        {% endfor %}
+    </div>
 {% endblock %}

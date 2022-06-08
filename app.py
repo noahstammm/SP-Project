@@ -8,11 +8,11 @@ from dto.football.football_dto import FootballDto
 
 from service.birthday.birthday_service import calculate_probability
 from service.roulette.roulette_service import RouletteService
-from service.football.football_service import footballService, get_teams, get_standingsch, get_standingsrel, \
-    get_season_ids
+from service.football.football_service import footballService, get_teams, \
+    get_season_ids, get_standingsrel_current, get_standingsch_current, get_standingsregular_current, \
+    get_standingsregular_last, get_standingsch_last, get_standingsrel_last, get_season_idf
 from service.football.football_service import footballService, get_team_statistics
 from service.football.football_service import footballService, probability_to_win
-from service.football.football_service import footballService, get_standingsregular
 
 app = Flask(__name__)
 # Load Configurations
@@ -57,22 +57,35 @@ def standings_football():
 
 @app.route('/football/standings/result', methods=['POST'])
 def standings_football_result():
+    l = get_season_idf()
+    print(l[1])
+    selected_season = request.form.get('season')
+    print(selected_season)
     selected = request.form.get('season_phase')
-    df1 = get_standingsregular()
-    print(selected)
+    df1 = get_standingsregular_last()
+    title: str = ""
+    text1: str = " "
 
-    if selected == 'tables_regular':
-        df1 = get_standingsregular()
+    if selected_season == 'current':
+        if selected == 'tables_regular':
+            df1 = get_standingsregular_current()
+        elif selected == 'tables_champ':
+            df1 = get_standingsch_current()
+        elif selected == 'tables_releg':
+            df1 = get_standingsrel_current()
 
-    elif selected == 'tables_champ':
-        df1 = get_standingsch()
-
-    elif selected == 'tables_releg':
-        df1 = get_standingsrel()
+    elif selected_season == 'last':
+        text1 = "Season 2022/2023 hasn't begun yet"
+        if selected == 'tables_regular':
+            df1 = get_standingsregular_last()
+        # elif selected == 'tables_champ':
+        #   df1 = get_standingsch_last()
+        # elif selected == 'tables_releg':
+        #   df1 = get_standingsrel_last()
 
     return render_template(template_name_or_list='football/football_standings_result.html',
                            tables=[df1.to_html(classes='data')],
-                           titles=df1.columns.values)
+                           titles=df1.columns.values, text=text1)
 
 
 if __name__ == '__main__':

@@ -5,6 +5,7 @@ from typing import List, Any
 import pandas as pd
 
 import requests
+
 from dto.football.football_dto import FootballDto
 
 teams_wins = int
@@ -149,7 +150,7 @@ def get_team_statistics(teams_name) -> [str]:
             total_games = team_wins + team_lost
             print(total_games)
 
-            return team_wins, team_lost,  "The season is over"
+            return team_wins, team_lost, "The season is over"
 
         else:
             print("We are in the else Statement of Get Stat")
@@ -162,7 +163,7 @@ def get_team_statistics(teams_name) -> [str]:
             total_games = team_wins + team_lost
             print("Total games played: ", total_games)
 
-            return team_wins, team_lost,  "The season is over"
+            return team_wins, team_lost, "The season is over"
 
     else:
         print("Round id:", current_round_id)
@@ -238,7 +239,7 @@ def get_team_statistics(teams_name) -> [str]:
             total_games = team_wins + team_lost
             print(total_games)
 
-            return team_wins, team_lost,  "The season is over"
+            return team_wins, team_lost, "The season is over"
 
         else:
             print("We are in the else Statement of Get Stat")
@@ -262,8 +263,11 @@ def probability_to_win(wins, lost) -> float:
     return win_probability
 
 
-def get_standingsregular():
-    url_stands = f"https://soccer.sportmonks.com/api/v2.0/standings/season/18334/{api_token}"
+def get_standingsregular_current():
+    season = ""
+    l = get_season_idf()
+    season = str(l[1])
+    url_stands = f"https://soccer.sportmonks.com/api/v2.0/standings/season/{season}/{api_token}"
 
     payload = {}
     headers = {}
@@ -304,8 +308,56 @@ def get_standingsregular():
     return df
 
 
-def get_standingsch():
-    url_stands = f"https://soccer.sportmonks.com/api/v2.0/standings/season/18334/{api_token}"
+def get_standingsregular_last():
+    season = ""
+    l = get_season_idf()
+    season = str(l[0])
+    url_stands = f"https://soccer.sportmonks.com/api/v2.0/standings/season/{season}/{api_token}"
+
+    payload = {}
+    headers = {}
+
+    # position = str
+    response_stands = requests.request("GET", url_stands, headers=headers, data=payload)
+    content_stands = json.loads(response_stands.text)
+    length_r = 12
+    # length_champ = 6
+    # length_relegation = 6
+    data = {
+        "Position": [],
+        "Name": [],
+        "Played Games": [],
+        "Won": [],
+        "Lost": [],
+        "Draws": [],
+        "+/-": [],
+        "Points": []
+
+    }
+
+    i = 0
+    while i < length_r:
+        data.get("Position").append(content_stands['data'][0]['standings']['data'][i]['position'])
+        data.get("Name").append(content_stands['data'][0]['standings']['data'][i]['team_name'])
+        data.get("Played Games").append(content_stands['data'][0]['standings']['data'][i]['overall']['games_played'])
+        data.get("Won").append(content_stands['data'][0]['standings']['data'][i]['overall']['won'])
+        data.get("Lost").append(content_stands['data'][0]['standings']['data'][i]['overall']['lost'])
+        data.get("Draws").append(content_stands['data'][0]['standings']['data'][i]['overall']['draw'])
+        data.get("+/-").append(((content_stands['data'][0]['standings']['data'][i]['overall']['goals_scored'])
+                                - (content_stands['data'][0]['standings']['data'][i]['overall']['goals_against'])))
+        data.get("Points").append(content_stands['data'][0]['standings']['data'][i]['overall']['points'])
+
+        i += 1
+
+    df = pd.DataFrame(data)
+    return df
+
+
+def get_standingsch_current():
+    season = ""
+    l = get_season_idf()
+    season = str(l[1])
+    url_stands = f"https://soccer.sportmonks.com/api/v2.0/standings/season/{season}/{api_token}"
 
     payload = {}
     headers = {}
@@ -346,8 +398,100 @@ def get_standingsch():
     return df
 
 
-def get_standingsrel():
-    url_stands = f"https://soccer.sportmonks.com/api/v2.0/standings/season/18334/{api_token}"
+def get_standingsch_last():
+    season = ""
+    l = get_season_idf()
+    season = str(l[0])
+    url_stands = f"https://soccer.sportmonks.com/api/v2.0/standings/season/{season}/{api_token}"
+
+    payload = {}
+    headers = {}
+
+    # position = str
+    response_stands = requests.request("GET", url_stands, headers=headers, data=payload)
+    content_stands = json.loads(response_stands.text)
+    length_r = 6
+
+    datach = {
+        "Position": [],
+        "Name": [],
+        "Played Games": [],
+        "Won": [],
+        "Lost": [],
+        "Draws": [],
+        "+/-": [],
+        "Points": []
+
+    }
+
+    i = 0
+    while i < length_r:
+        datach.get("Position").append(content_stands['data'][2]['standings']['data'][i]['position'])
+        datach.get("Name").append(content_stands['data'][2]['standings']['data'][i]['team_name'])
+        datach.get("Played Games").append(content_stands['data'][2]['standings']['data'][i]['overall']['games_played'])
+        datach.get("Won").append(content_stands['data'][2]['standings']['data'][i]['overall']['won'])
+        datach.get("Lost").append(content_stands['data'][2]['standings']['data'][i]['overall']['lost'])
+        datach.get("Draws").append(content_stands['data'][2]['standings']['data'][i]['overall']['draw'])
+        datach.get("+/-").append(((content_stands['data'][2]['standings']['data'][i]['overall']['goals_scored'])
+                                  - (content_stands['data'][2]['standings']['data'][i]['overall']['goals_against'])))
+        datach.get("Points").append(content_stands['data'][2]['standings']['data'][i]['overall']['points'])
+
+        i += 1
+
+    df = pd.DataFrame(datach)
+
+    return df
+
+
+def get_standingsrel_current():
+    season = ""
+    l = get_season_idf()
+    season = str(l[1])
+    url_stands = f"https://soccer.sportmonks.com/api/v2.0/standings/season/{season}/{api_token}"
+
+    payload = {}
+    headers = {}
+
+    response_stands = requests.request("GET", url_stands, headers=headers, data=payload)
+    content_stands = json.loads(response_stands.text)
+    length_r = 6
+
+    datarel = {
+        "Position": [],
+        "Name": [],
+        "Played Games": [],
+        "Won": [],
+        "Lost": [],
+        "Draws": [],
+        "+/-": [],
+        "Points": []
+
+    }
+
+    i = 0
+    while i < length_r:
+        datarel.get("Position").append(content_stands['data'][1]['standings']['data'][i]['position'])
+        datarel.get("Name").append(content_stands['data'][1]['standings']['data'][i]['team_name'])
+        datarel.get("Played Games").append(content_stands['data'][1]['standings']['data'][i]['overall']['games_played'])
+        datarel.get("Won").append(content_stands['data'][1]['standings']['data'][i]['overall']['won'])
+        datarel.get("Lost").append(content_stands['data'][1]['standings']['data'][i]['overall']['lost'])
+        datarel.get("Draws").append(content_stands['data'][1]['standings']['data'][i]['overall']['draw'])
+        datarel.get("+/-").append(((content_stands['data'][1]['standings']['data'][i]['overall']['goals_scored'])
+                                   - (content_stands['data'][1]['standings']['data'][i]['overall']['goals_against'])))
+        datarel.get("Points").append(content_stands['data'][1]['standings']['data'][i]['overall']['points'])
+
+        i += 1
+
+    df = pd.DataFrame(datarel)
+
+    return df
+
+
+def get_standingsrel_last():
+    season = ""
+    l = get_season_idf()
+    season = str(l[0])
+    url_stands = f"https://soccer.sportmonks.com/api/v2.0/standings/season/{season}/{api_token}"
 
     payload = {}
     headers = {}
@@ -420,3 +564,20 @@ def get_season_ids():
     df = pd.DataFrame(data)
     df = df.loc[df['League ID'] == 271]
     return df
+
+
+def get_season_idf():
+    url_seasonall = f"https://soccer.sportmonks.com/api/v2.0/seasons{api_token}"
+
+    payload = {}
+    headers = {}
+
+    response = requests.request("GET", url_seasonall, headers=headers, data=payload)
+    all_seasons = json.loads(response.text)
+    length_r = 18
+
+    current_season = all_seasons['data'][17]['id']
+    last_season = all_seasons['data'][16]['id']
+    l = [last_season, current_season]
+
+    return l
