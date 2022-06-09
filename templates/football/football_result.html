@@ -4,10 +4,12 @@
     <div class="container">
         <h1>Football Odds</h1>
 
-        <p>You selected the team:  {{ dto.team }}.</p>
-        <p>You selected the team wins:  {{ dto.wins }}.</p>
-        <p>You selected the team lost:  {{ dto.lost }}.</p>
-        <p>You selected the team probability for the next game:  {{ dto.probability }}%.</p>
+        <p>Selected team: {{ dto.team }}.</p>
+        <p>Total Wins: {{ dto.wins }}.</p>
+        <p>Total Losses: {{ dto.lost }}.</p>
+        <p>Win probability for the next game: {{ dto.probability }}%.</p>
         <p>{{ dto.hint }}</p>
     </div>
+
 {% endblock %}
+

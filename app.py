@@ -2,6 +2,10 @@ import pandas as pd
 from flask import Flask, render_template, request
 from pandas import DataFrame
 
+import json
+import plotly
+import plotly.express as px
+
 from dto.birthday.birthday_dto import BirthdayDto
 from dto.roulette.roulette_dto import RouletteDto
 from dto.football.football_dto import FootballDto
@@ -27,13 +31,12 @@ def home() -> str:
 @app.route('/football')
 def football() -> str:
     teams = get_teams()
-    print(teams)
+
     return render_template(template_name_or_list='football/football.html', teams=teams)
 
 
 @app.route('/football/result', methods=['POST'])
 def calculate_football():
-    print("------------  results are calculated -----------------")
     team = request.form.get('teams_select')
     team_stat = get_team_statistics(team)
     print(team_stat)
@@ -41,7 +44,8 @@ def calculate_football():
     lost = team_stat[1]
     hint = team_stat[2]
     prob = probability_to_win(wins, lost)
-    football_dto = FootballDto(team=team, wins=wins, lost=lost, probability=prob, hint=hint)
+
+    football_dto = FootballDto(team=team, wins=wins, lost=lost, probability=prob, hint=hint, )
 
     return render_template(template_name_or_list='football/football_result.html', dto=football_dto)
 
@@ -58,9 +62,9 @@ def standings_football():
 @app.route('/football/standings/result', methods=['POST'])
 def standings_football_result():
     l = get_season_idf()
-    print(l[1])
+
     selected_season = request.form.get('season')
-    print(selected_season)
+
     selected = request.form.get('season_phase')
     df1 = get_standingsregular_last()
     title: str = ""
@@ -78,14 +82,17 @@ def standings_football_result():
         text1 = "Season 2022/2023 hasn't begun yet"
         if selected == 'tables_regular':
             df1 = get_standingsregular_last()
-        # elif selected == 'tables_champ':
-        #   df1 = get_standingsch_last()
-        # elif selected == 'tables_releg':
-        #   df1 = get_standingsrel_last()
+        elif selected == 'tables_champ':
+            df1 = get_standingsch_last()
+        elif selected == 'tables_releg':
+            df1 = get_standingsrel_last()
 
+    fig = px.bar(df1, x='Played Games', y='Points', color='Name',
+                 barmode='group')
+    graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
     return render_template(template_name_or_list='football/football_standings_result.html',
                            tables=[df1.to_html(classes='data')],
-                           titles=df1.columns.values, text=text1)
+                           titles=df1.columns.values, text=text1, graphJSON=graphJSON)
 
 
 if __name__ == '__main__':

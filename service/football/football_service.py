@@ -32,8 +32,6 @@ def get_teams() -> [str]:
     for x in range(12):
         teams.append(content['data'][0]['standings']['data'][x]['team_name'])
 
-    print("Team Content: ", teams)
-
     return teams
 
 
@@ -48,7 +46,6 @@ def get_team_statistics(teams_name) -> [str]:
     response = requests.request("GET", url, headers=headers, data=payload)
 
     content = json.loads(response.text)
-    print("Team Content: ", content)
 
     # get the team id and the current season id from the json
     teams_id_list = list(map(lambda season: season.get('id'), content.get('data')))
@@ -56,14 +53,12 @@ def get_team_statistics(teams_name) -> [str]:
     start = "["
     end = "]"
     team_id = team_id.split(start)[1].split(end)[0]
-    print("Team id: ", team_id)
 
     current_season_list = list(map(lambda season: season.get('current_season_id'), content.get('data')))
     current_season_id = str(current_season_list)
     start = "["
     end = "]"
     current_season_id = current_season_id.split(start)[1].split(end)[0]
-    print("Season id ", current_season_id)
 
     # Request season
     url_season = f"https://soccer.sportmonks.com/api/v2.0/seasons/{current_season_id}?api_token=zLKFDGJ9CvmFi0BvnMBY0psu2g0bhP6KiMS9MRMnvR4ArUzB7Er7v4bKBuQr"
@@ -74,10 +69,10 @@ def get_team_statistics(teams_name) -> [str]:
     response_season = requests.request("GET", url_season, headers=headers, data=payload)
 
     content_season = json.loads(response_season.text)
-    print(content_season)
+
     current_round_id = content_season['data']['current_round_id']
     if current_round_id is None:
-        print('The seasons is over')
+
         url_round = f"https://soccer.sportmonks.com/api/v2.0/rounds/271940?api_token=zLKFDGJ9CvmFi0BvnMBY0psu2g0bhP6KiMS9MRMnvR4ArUzB7Er7v4bKBuQr"
 
         payload = {}
@@ -89,8 +84,6 @@ def get_team_statistics(teams_name) -> [str]:
         current_round_id = content_round['data']
         start_date = content_round['data']['start']
         end_date = content_round['data']['end']
-        print(start_date, "and", end_date)
-        print("This is the current round: ", current_round_id)
 
         # Get Fixture
 
@@ -103,7 +96,6 @@ def get_team_statistics(teams_name) -> [str]:
 
         content_fixture = json.loads(response_fixture.text)
         current_fixture_id = content_fixture['data'][0]['id']
-        print("This is the current fixture: ", current_fixture_id)
 
         # Get odds
         url_odds = f"https://soccer.sportmonks.com/api/v2.0/odds/fixture/{current_fixture_id}?api_token=zLKFDGJ9CvmFi0BvnMBY0psu2g0bhP6KiMS9MRMnvR4ArUzB7Er7v4bKBuQr"
@@ -116,8 +108,6 @@ def get_team_statistics(teams_name) -> [str]:
         content_odds = json.loads(response_odds.text)
         current_odds_name = content_odds['data'][0]['bookmaker']['data'][0]['name']
         current_odds_probability = content_odds['data'][0]['bookmaker']['data'][0]['odds']['data'][0]['probability']
-        print("This is the current odds name: ", current_odds_name)
-        print("This is the current odds odds: ", current_odds_probability)
 
         # Get stats
         url_stat = f"https://soccer.sportmonks.com/api/v2.0/teams/{team_id}?api_token=zLKFDGJ9CvmFi0BvnMBY0psu2g0bhP6KiMS9MRMnvR4ArUzB7Er7v4bKBuQr&include=stats&seasons={current_season_id}"
@@ -132,7 +122,7 @@ def get_team_statistics(teams_name) -> [str]:
         team_lost = content_stat['data']['stats']['data']
 
         if team_wins == [] and team_lost == []:
-            print("We are in the if Statement of Get Stat")
+
             url_stat = f"https://soccer.sportmonks.com/api/v2.0/teams/{team_id}?api_token=zLKFDGJ9CvmFi0BvnMBY0psu2g0bhP6KiMS9MRMnvR4ArUzB7Er7v4bKBuQr&include=stats&seasons=18334"
 
             payload = {}
@@ -144,29 +134,20 @@ def get_team_statistics(teams_name) -> [str]:
             team_wins = content_stat['data']['stats']['data'][0]['win']['total']
             team_lost = content_stat['data']['stats']['data'][0]['lost']['total']
 
-            print(team_wins)
-            print(team_lost)
-
             total_games = team_wins + team_lost
-            print(total_games)
 
             return team_wins, team_lost, "The season is over"
 
         else:
-            print("We are in the else Statement of Get Stat")
 
             team_wins = content_stat['data']['stats']['data'][0]['win']['total']
             team_lost = content_stat['data']['stats']['data'][0]['lost']['total']
-            print(team_wins)
-            print(team_lost)
 
             total_games = team_wins + team_lost
-            print("Total games played: ", total_games)
 
             return team_wins, team_lost, "The season is over"
 
     else:
-        print("Round id:", current_round_id)
         url_round = f"https://soccer.sportmonks.com/api/v2.0/rounds/{current_round_id}?api_token=zLKFDGJ9CvmFi0BvnMBY0psu2g0bhP6KiMS9MRMnvR4ArUzB7Er7v4bKBuQr"
 
         payload = {}
@@ -178,8 +159,6 @@ def get_team_statistics(teams_name) -> [str]:
         current_round_id = content_round['data']
         start_date = content_round['data']['start']
         end_date = content_round['data']['end']
-        print(start_date, "and", end_date)
-        print("This is the current round: ", current_round_id)
 
         # Get Fixture
 
@@ -192,7 +171,6 @@ def get_team_statistics(teams_name) -> [str]:
 
         content_fixture = json.loads(response_fixture.text)
         current_fixture_id = content_fixture['data'][0]['id']
-        print("This is the current fixture: ", current_fixture_id)
 
         # Get odds
         url_odds = f"https://soccer.sportmonks.com/api/v2.0/odds/fixture/{current_fixture_id}?api_token=zLKFDGJ9CvmFi0BvnMBY0psu2g0bhP6KiMS9MRMnvR4ArUzB7Er7v4bKBuQr"
@@ -205,8 +183,6 @@ def get_team_statistics(teams_name) -> [str]:
         content_odds = json.loads(response_odds.text)
         current_odds_name = content_odds['data'][0]['bookmaker']['data'][0]['name']
         current_odds_probability = content_odds['data'][0]['bookmaker']['data'][0]['odds']['data'][0]['probability']
-        print("This is the current odds name: ", current_odds_name)
-        print("This is the current odds odds: ", current_odds_probability)
 
         # Get stats
         url_stat = f"https://soccer.sportmonks.com/api/v2.0/teams/{team_id}?api_token=zLKFDGJ9CvmFi0BvnMBY0psu2g0bhP6KiMS9MRMnvR4ArUzB7Er7v4bKBuQr&include=stats&seasons={current_season_id}"
@@ -221,7 +197,7 @@ def get_team_statistics(teams_name) -> [str]:
         team_lost = content_stat['data']['stats']['data']
 
         if team_wins == [] and team_lost == []:
-            print("We are in the if Statement of Get Stat")
+
             url_stat = f"https://soccer.sportmonks.com/api/v2.0/teams/{team_id}?api_token=zLKFDGJ9CvmFi0BvnMBY0psu2g0bhP6KiMS9MRMnvR4ArUzB7Er7v4bKBuQr&include=stats&seasons=18334"
 
             payload = {}
@@ -233,24 +209,16 @@ def get_team_statistics(teams_name) -> [str]:
             team_wins = content_stat['data']['stats']['data'][0]['win']['total']
             team_lost = content_stat['data']['stats']['data'][0]['lost']['total']
 
-            print(team_wins)
-            print(team_lost)
-
             total_games = team_wins + team_lost
-            print(total_games)
 
             return team_wins, team_lost, "The season is over"
 
         else:
-            print("We are in the else Statement of Get Stat")
 
             team_wins = content_stat['data']['stats']['data'][0]['win']['total']
             team_lost = content_stat['data']['stats']['data'][0]['lost']['total']
-            print(team_wins)
-            print(team_lost)
 
             total_games = team_wins + team_lost
-            print("Total games played: ", total_games)
 
             return team_wins, team_lost, "The season is over"
 
@@ -258,7 +226,6 @@ def get_team_statistics(teams_name) -> [str]:
 def probability_to_win(wins, lost) -> float:
     total_games = wins + lost
     win_probability = 100 / total_games * wins
-    print("Total games played: ", total_games)
 
     return win_probability
 
@@ -576,8 +543,8 @@ def get_season_idf():
     all_seasons = json.loads(response.text)
     length_r = 18
 
-    current_season = all_seasons['data'][17]['id']
+    old_season = all_seasons['data'][15]['id']
     last_season = all_seasons['data'][16]['id']
-    l = [last_season, current_season]
+    l = [last_season, old_season]
 
     return l
