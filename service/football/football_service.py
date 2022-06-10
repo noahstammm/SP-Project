@@ -32,6 +32,10 @@ def get_teams() -> [str]:
     for x in range(12):
         teams.append(content['data'][0]['standings']['data'][x]['team_name'])
 
+    #teams.remove('OB')
+    teams.remove('Vejle')
+    teams.remove('SønderjyskE')
+
     return teams
 
 
@@ -49,12 +53,20 @@ def get_team_statistics(teams_name) -> [str]:
 
     # get the team id and the current season id from the json
     teams_id_list = list(map(lambda season: season.get('id'), content.get('data')))
+    if len(teams_id_list) >= 2:
+        teams_id_list.pop(0)
+        print(teams_id_list)
     team_id = str(teams_id_list)
     start = "["
     end = "]"
     team_id = team_id.split(start)[1].split(end)[0]
+    print("Team id: ", team_id)
 
     current_season_list = list(map(lambda season: season.get('current_season_id'), content.get('data')))
+    print(current_season_list)
+    if len(current_season_list) >= 2:
+        current_season_list.pop(0)
+        print(current_season_list)
     current_season_id = str(current_season_list)
     start = "["
     end = "]"
@@ -82,7 +94,7 @@ def get_team_statistics(teams_name) -> [str]:
 
         content_round = json.loads(response_round.text)
         current_round_id = content_round['data']
-        start_date = content_round['data']['start']
+        start_date = "2022-05-21"
         end_date = content_round['data']['end']
 
         # Get Fixture
@@ -157,7 +169,7 @@ def get_team_statistics(teams_name) -> [str]:
 
         content_round = json.loads(response_round.text)
         current_round_id = content_round['data']
-        start_date = content_round['data']['start']
+        start_date = "2022-05-21"
         end_date = content_round['data']['end']
 
         # Get Fixture
